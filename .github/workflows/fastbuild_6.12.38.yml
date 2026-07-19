@@ -347,6 +347,9 @@ jobs:
           cd kernel_workspace/common
           wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/nomount_6.12_kernel_integration.patch
           patch -p1 -F 3 < nomount_6.12_kernel_integration.patch || true
+          # 拉取 nomount.c/.h 实现源码并放入 fs/ 目录 (patch 中 Makefile 引用 obj-$(CONFIG_NOMOUNT) += nomount.o)
+          wget -O fs/nomount.c https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/nomount.c
+          wget -O fs/nomount.h https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/nomount.h
           # 显式写入 CONFIG_NOMOUNT=y (Kconfig 默认即为 y, 此处显式声明便于追踪)
           echo "CONFIG_NOMOUNT=y" >> ./arch/arm64/configs/gki_defconfig
 
