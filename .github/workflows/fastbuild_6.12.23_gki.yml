@@ -81,7 +81,7 @@ on:
         type: boolean
         default: 'true'
       nomount_enable:
-        description: '是否应用 NoMount 路径重定向集成补丁(为系统less修改提供路径重定向和虚拟文件注入能力; 注意该补丁仅含内核集成hook, 需自行确保nomount.c实现已就位, 否则编译会失败)'
+        description: '是否应用 NoMount 挂载模块内核集成补丁(为NoMount挂载模块提供路径重定向/虚拟文件注入等VFS hook支持)'
         required: true
         type: boolean
         default: 'false'
@@ -343,7 +343,7 @@ jobs:
       - name: 应用 nomount 集成补丁
         if: inputs.nomount_enable
         run: |
-          echo "正在添加 nomount 内核集成补丁(路径重定向/虚拟文件注入hook)…"
+          echo "正在添加 nomount 挂载模块内核集成补丁(为NoMount挂载模块提供VFS hook支持)…"
           cd kernel_workspace/common
           wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/nomount_6.12_kernel_integration.patch
           patch -p1 -F 3 < nomount_6.12_kernel_integration.patch || true
@@ -872,7 +872,7 @@ jobs:
           - ADIOS IO调度器支持：${{ github.event.inputs.adios_enable }}
           - Re-Kernel支持：${{ github.event.inputs.rekernel_enable }}
           - 内核级基带保护支持：${{ github.event.inputs.baseband_guard }}
-          - NoMount 路径重定向支持：${{ github.event.inputs.nomount_enable }}
+          - NoMount 挂载模块支持：${{ github.event.inputs.nomount_enable }}
           - ReSukiSU管理器下载：[ReSukiSU_CI](https://github.com/cctv18/ReSukiSU_CI/releases)
           - SukiSU Ultra管理器下载：[SukiSU-Ultra](https://github.com/SukiSU-Ultra/SukiSU-Ultra/releases)
           - KernelSU Next管理器下载：[KernelSU-Next](https://github.com/KernelSU-Next/KernelSU-Next/releases)
